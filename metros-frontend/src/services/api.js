@@ -2,7 +2,16 @@
 let useMockData = false; // переключите на false когда CORS заработает
 
 // Используем переменные окружения
-const BASE_URL = 'https://metro-backend-xlkt.onrender.com/api';
+// const BASE_URL = 'https://metro-backend-xlkt.onrender.com/api';
+// Автоматическое определение URL для разработки и продакшена
+const BASE_URL = import.meta.env.DEV 
+  ? 'https://metro-backend-xlkt.onrender.com/api'  // В разработке - прямой URL
+  : 'https://metro-backend-xlkt.onrender.com/api'; // В продакшене - тот же URL
+
+console.log('🌐 API Base URL:', BASE_URL, 'DEV mode:', import.meta.env.DEV);
+
+
+// ... остальной код без изменений
 
 // Временный мок API для разработки
 let useMockData = false;
