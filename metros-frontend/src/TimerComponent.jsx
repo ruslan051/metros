@@ -8,6 +8,14 @@ export const TimerComponent = ({
   userId,
   onStatusUpdate 
 }) => {
+
+  // 🔧 ДИАГНОСТИКА - добавьте этот console.log
+  console.log('🔧 TimerComponent рендерится:', { 
+    selectedMinutes, 
+    userId,
+    hasOnTimerSelect: !!onTimerSelect,
+    hasOnStatusUpdate: !!onStatusUpdate
+  });
   const [timerActive, setTimerActive] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
   
