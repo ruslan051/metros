@@ -12,12 +12,18 @@ const PORT = process.env.PORT || 3001;
 // Middleware
 app.use(cors({
   origin: [
-    'https://frommetro.vercel.app',
+    'https://frommetro.vercel.app',  // ваш фронтенд на Vercel
+    'https://metros-git-main-ruslans-projects-c1667076.vercel.app', // альтернативный домен Vercel
+    'https://metros-ruslans-projects-c1667076.vercel.app', // еще один возможный домен
     'http://localhost:3000', 
     'http://localhost:5173'
   ],
   credentials: true
 }));
+
+
+
+
 app.use(express.json());
 
 // Мок данные для API
