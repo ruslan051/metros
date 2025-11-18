@@ -346,22 +346,24 @@ export const App = () => {
   const handleCitySelect = (city) => setSelectedCity(city);
   const handleGenderSelect = (gender) => setSelectedGender(gender);
 
-  const handlePositionSelect = async (position) => {
-  setSelectedPosition(position);
-  localStorage.setItem('selectedPosition', position);
-  
-  // Немедленное обновление UI
-  await updateUserState();
-};
+
+          // обновление индикаторов состояния
+          const handlePositionSelect = async (position) => {
+          setSelectedPosition(position);
+          localStorage.setItem('selectedPosition', position);
+          
+          // Немедленное обновление UI
+          await updateUserState();
+        };
 
 
-  const handleMoodSelect = async (mood) => {
-  setSelectedMood(mood);
-  localStorage.setItem('selectedMood', mood);
-  
-  // Немедленное обновление UI
-  await updateUserState();
-};
+          const handleMoodSelect = async (mood) => {
+          setSelectedMood(mood);
+          localStorage.setItem('selectedMood', mood);
+          
+          // Немедленное обновление UI
+          await updateUserState();
+        };
 
   const handleStationSelect = (stationName) => {
     setCurrentSelectedStation(stationName);
@@ -373,35 +375,40 @@ export const App = () => {
     localStorage.setItem('selectedTimerMinutes', minutes);
   };
 
-  const updateUserState = async () => {
-    if (!userIdRef.current) return;
+const updateUserState = async () => {
+  if (!userIdRef.current) return;
+  
+  try {
+    const newStatus = generateUserStatus();
     
-    try {
-      const newStatus = generateUserStatus();
-      await api.updateUser(userIdRef.current, { 
-        status: newStatus,
-        position: selectedPosition,
-        mood: selectedMood
-      });
-      
-      setGroupMembers(prevMembers => 
-        prevMembers.map(member => 
-          member.id === userIdRef.current 
-            ? { 
-                ...member, 
-                status: newStatus,
-                position: selectedPosition,
-                mood: selectedMood
-              }
-            : member
-        )
-      );
-      
-      await loadGroupMembers();
-    } catch (error) {
-      console.error('❌ Ошибка обновления состояния:', error);
-    }
-  };
+    // Сначала обновляем локальное состояние для мгновенного отображения
+    setGroupMembers(prevMembers => 
+      prevMembers.map(member => 
+        member.id === userIdRef.current 
+          ? { 
+              ...member, 
+              status: newStatus,
+              position: selectedPosition,
+              mood: selectedMood
+            }
+          : member
+      )
+    );
+    
+    // Затем отправляем на сервер
+    await api.updateUser(userIdRef.current, { 
+      status: newStatus,
+      position: selectedPosition,
+      mood: selectedMood
+    });
+    
+    // И перезагружаем актуальные данные
+    await loadGroupMembers();
+    
+  } catch (error) {
+    console.error('❌ Ошибка обновления состояния:', error);
+  }
+};
 
   const improvedPingActivity = async () => {
     if (!userIdRef.current) return false;
