@@ -134,18 +134,7 @@ export const TimerComponent = ({
 
   return (
     <div className="compact-timer" id="waiting-room-timer">
-        {/* Добавьте тестовую кнопку */}
-      <button 
-        onClick={testClick}
-        style={{
-          background: 'red',
-          color: 'white', 
-          padding: '10px',
-          margin: '10px 0'
-        }}
-      >
-        ТЕСТ: Нажми меня и посмотри в консоль
-      </button>
+     
       <div className="timer-header">
         <div className="timer-title">⏰ Таймер ожидания</div>
         <div className="timer-status">
