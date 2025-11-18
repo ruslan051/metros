@@ -66,6 +66,8 @@ export const App = () => {
   }, []);
 
   useEffect(() => {
+    console.log('✅ React компонент App загружен');
+  console.log('✅ Текущий экран:', currentScreen);
     console.log('🚀 App запущен, инициализируем VK Bridge...');
 
     bridge.send("VKWebAppInit")
