@@ -347,7 +347,7 @@ export const App = () => {
   const handleGenderSelect = (gender) => setSelectedGender(gender);
 
 
-          // обновление индикаторов состояния
+        // обновление индикаторов состояния
           const handlePositionSelect = async (position) => {
           setSelectedPosition(position);
           localStorage.setItem('selectedPosition', position);
@@ -375,40 +375,35 @@ export const App = () => {
     localStorage.setItem('selectedTimerMinutes', minutes);
   };
 
-const updateUserState = async () => {
-  if (!userIdRef.current) return;
-  
-  try {
-    const newStatus = generateUserStatus();
+  const updateUserState = async () => {
+    if (!userIdRef.current) return;
     
-    // Сначала обновляем локальное состояние для мгновенного отображения
-    setGroupMembers(prevMembers => 
-      prevMembers.map(member => 
-        member.id === userIdRef.current 
-          ? { 
-              ...member, 
-              status: newStatus,
-              position: selectedPosition,
-              mood: selectedMood
-            }
-          : member
-      )
-    );
-    
-    // Затем отправляем на сервер
-    await api.updateUser(userIdRef.current, { 
-      status: newStatus,
-      position: selectedPosition,
-      mood: selectedMood
-    });
-    
-    // И перезагружаем актуальные данные
-    await loadGroupMembers();
-    
-  } catch (error) {
-    console.error('❌ Ошибка обновления состояния:', error);
-  }
-};
+    try {
+      const newStatus = generateUserStatus();
+      await api.updateUser(userIdRef.current, { 
+        status: newStatus,
+        position: selectedPosition,
+        mood: selectedMood
+      });
+      
+      setGroupMembers(prevMembers => 
+        prevMembers.map(member => 
+          member.id === userIdRef.current 
+            ? { 
+                ...member, 
+                status: newStatus,
+                position: selectedPosition,
+                mood: selectedMood
+              }
+            : member
+        )
+      );
+      
+      await loadGroupMembers();
+    } catch (error) {
+      console.error('❌ Ошибка обновления состояния:', error);
+    }
+  };
 
   const improvedPingActivity = async () => {
     if (!userIdRef.current) return false;
